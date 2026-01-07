@@ -33,15 +33,15 @@ export async function PATCH(req, { params }) {
       WHERE id = ?
       `,
       [
-        event_date,
-        start_time,
-        duration_hours,
-        address,
-        place_type,
-        floor_detail,
-        city,
-        district,
-        address_detail,
+        event_date || null,
+        start_time || null,
+        duration_hours || null,
+        address || null,
+        place_type || null,
+        floor_detail || null,
+        city || null,
+        district || null,
+        address_detail || null,
         id,
       ]
     );
@@ -49,9 +49,6 @@ export async function PATCH(req, { params }) {
     return Response.json({ ok: true });
   } catch (err) {
     console.error("EVENT PATCH ERROR:", err);
-    return Response.json(
-      { ok: false, error: err.message },
-      { status: 500 }
-    );
+    return Response.json({ ok: false, error: err.message }, { status: 500 });
   }
 }

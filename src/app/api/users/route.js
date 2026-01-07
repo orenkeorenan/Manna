@@ -34,13 +34,13 @@ export async function POST(req) {
   }
 }
 
-// Optional GET = list users (for testing only)
-export async function GET() {
-  try {
-    const [rows] = await db.query("SELECT id, name, email FROM users");
-    return new Response(JSON.stringify(rows), { status: 200 });
-  } catch (err) {
-    console.error("GET USERS ERROR:", err);
-    return new Response(JSON.stringify({ error: "Failed to fetch users" }), { status: 500 });
-  }
-}
+// // Optional GET = list users (for testing only)
+// export async function GET() {
+//   try {
+//     const [rows] = await db.query("SELECT id, name, email FROM users");
+//     return new Response(JSON.stringify(rows), { status: 200 });
+//   } catch (err) {
+//     console.error("GET USERS ERROR:", err);
+//     return new Response(JSON.stringify({ error: "Failed to fetch users" }), { status: 500 });
+//   }
+// }
