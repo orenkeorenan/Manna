@@ -44,44 +44,38 @@ export default function EventList({ refreshSignal }) {
             boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
           }}
         >
-          <h3 style={{ margin: 0 }}>{event.title || "Untitled Event"}</h3>
+          <h3 style={{ margin: 0 }}>{event.title ?? ""}</h3>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Category:</strong> {event.category || "N/A"}
+            <strong>Category:</strong> {event.category ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>City:</strong> {event.city || "Unknown"}
+            <strong>City:</strong> {event.city ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
             <strong>Date:</strong>{" "}
-            {event.event_date
-              ? new Date(event.event_date).toLocaleDateString()
-              : "Not set"}
+            {event.event_date ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Start Time:</strong> {event.start_time || "Not set"}
+            <strong>Start Time:</strong> {event.start_time ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Duration:</strong> {event.duration_hours || "Not set"} hour(s)
+            <strong>Duration:</strong> {event.duration_hours ?? ""} hour(s)
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Address:</strong> {event.address || "Not set"}
+            <strong>Address:</strong> {event.address ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Place Type:</strong> {event.place_type || "Not set"}
+            <strong>Place Type:</strong> {event.place_type ?? ""}
           </p>
           <p style={{ margin: "0.25rem 0" }}>
-            <strong>Floor Detail:</strong> {event.floor_detail || "Not set"}
+            <strong>Floor Detail:</strong> {event.floor_detail ?? ""}
           </p>
-          {event.district && (
-            <p style={{ margin: "0.25rem 0" }}>
-              <strong>District:</strong> {event.district}
-            </p>
-          )}
-          {event.address_detail && (
-            <p style={{ margin: "0.25rem 0" }}>
-              <strong>Address Detail:</strong> {event.address_detail}
-            </p>
-          )}
+          <p style={{ margin: "0.25rem 0" }}>
+            <strong>District:</strong> {event.district ?? ""}
+          </p>
+          <p style={{ margin: "0.25rem 0" }}>
+            <strong>Address Detail:</strong> {event.address_detail ?? ""}
+          </p>
         </div>
       ))}
     </div>
