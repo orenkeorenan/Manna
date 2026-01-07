@@ -1,10 +1,10 @@
 import mysql from "mysql2/promise";
 
-let db; // singleton for serverless
+let db;
 
 if (!db) {
   db = mysql.createPool({
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST,            // must be cloud DB host
     port: Number(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -12,7 +12,7 @@ if (!db) {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    ssl: { rejectUnauthorized: false }, 
+    ssl: { rejectUnauthorized: false },    // required for PlanetScale / Cloud MySQL
   });
 }
 
