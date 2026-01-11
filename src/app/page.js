@@ -15,6 +15,9 @@ export default function Home() {
       }}
     >
       <CreateEvent onEventCreated={() => setRefreshSignal(prev => !prev)} />  
+      <div>
+        -- Filter space here --
+      </div>
       <EventList refreshSignal={refreshSignal} />
     </div>
   );

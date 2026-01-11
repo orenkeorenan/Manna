@@ -1,5 +1,10 @@
 "use client";
 import React, { useState } from "react";
+import Inputs from "../component/Inputs/Inputs";
+import CattegoryEvent from "./CattegoryEvent/CattegoryEvent";
+import TitleEvent from "./TitleEvent/TitleEvent";
+import Buttons from "../component/Buttons/Buttons";
+import CreateEventModal from "../component/Modal/CreateEventModal";
 
 export default function CreateEvent() {
   const [category, setCategory] = useState("");
@@ -8,7 +13,6 @@ export default function CreateEvent() {
   const [showDetails, setShowDetails] = useState(false);
   const [eventId, setEventId] = useState(null);
 
-  // STEP 2 modal fields
   const [eventDate, setEventDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [duration, setDuration] = useState("");
@@ -17,7 +21,6 @@ export default function CreateEvent() {
   const [floorDetail, setFloorDetail] = useState("");
   const [city, setCity] = useState("");
 
-  // STEP 1: Create minimal event
   async function handleCreate() {
     if (!category || !title) {
       alert("Fill all fields");
@@ -42,7 +45,7 @@ export default function CreateEvent() {
       }
 
       setEventId(data.eventId);
-      setShowDetails(true); // open modal
+      setShowDetails(true);
       setCategory("");
       setTitle("");
     } catch (err) {
@@ -53,7 +56,6 @@ export default function CreateEvent() {
     setLoading(false);
   }
 
-  // STEP 2: Update event with details
   async function handlePostDetails() {
     if (!eventDate || !startTime || !duration || !address) {
       alert("Fill all required fields");
@@ -86,7 +88,6 @@ export default function CreateEvent() {
       }
 
       alert("Event fully created ✅");
-      props.onEventCreated?.();
       setShowDetails(false);
 
       // Reset modal inputs
@@ -105,152 +106,54 @@ export default function CreateEvent() {
     setLoading(false);
   }
 
+  const handleCloseModal = () => {
+    setShowDetails(false);
+  };
+
   return (
     <>
       {/* STEP 1 */}
-      <div style={styles.createBox}>
-        <input
-          placeholder="Category (Coffee, Study, Dinner)"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          style={styles.input}
-        />
-        <input
-          placeholder="Event title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={styles.input}
-        />
-        <button onClick={handleCreate} disabled={loading} style={styles.primaryBtn}>
-          {loading ? "Creating..." : "Create"}
-        </button>
-      </div>
-
-      {/* STEP 2 MODAL */}
-      {showDetails && (
-        <div style={styles.overlay}>
-          <div style={styles.modal}>
-            <h3 style={{ marginBottom: "1rem" }}>Tell us more ✨</h3>
-
-            <input
-              style={styles.input}
-              placeholder="Event date (YYYY-MM-DD)"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="Start time (18:30)"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="Duration (2.5 hours)"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="Place type (Cafe, Bar)"
-              value={placeType}
-              onChange={(e) => setPlaceType(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="Floor / building detail"
-              value={floorDetail}
-              onChange={(e) => setFloorDetail(e.target.value)}
-            />
-            <input
-              style={styles.input}
-              placeholder="City"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-
-            <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
-              <button onClick={handlePostDetails} style={styles.primaryBtn}>
-                {loading ? "Posting..." : "Post Event"}
-              </button>
-              <button
-                style={styles.secondaryBtn}
-                onClick={() => setShowDetails(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+        <div
+            style={{
+            backgroundColor: "#f3f4f6",
+            width: "80vw",
+            padding: "1rem",
+            borderRadius: "0.75rem 0.75rem 0 0",
+            display: "flex",
+            gap: "0.5rem",
+            alignItems: "center",
+            justifyContent: "center",
+            }}
+        >
+            <CattegoryEvent category={category} setCategory={setCategory} />
+            <TitleEvent setTitle={setTitle} title={title} />
+            <Buttons onClick={handleCreate} loading={loading}>
+                {loading ? "Creating..." : "Create"}
+            </Buttons>
         </div>
-      )}
+
+        {/* STEP 2 MODAL */}
+        {showDetails && (
+            <CreateEventModal
+                eventDate={eventDate}
+                setEventDate={setEventDate}
+                startTime={startTime}
+                setStartTime={setStartTime}
+                duration={duration}
+                setDuration={setDuration}
+                address={address}
+                setAddress={setAddress}
+                placeType={placeType}
+                setPlaceType={setPlaceType}
+                floorDetail={floorDetail}
+                setFloorDetail={setFloorDetail}
+                city={city}
+                setCity={setCity}
+                handlePostDetails={handlePostDetails}
+                loading={loading}
+                onClose={handleCloseModal}   
+            />
+        )}
     </>
   );
 }
-
-/* ================= STYLES ================= */
-
-const styles = {
-  createBox: {
-    backgroundColor: "#f3f4f6",
-    width: "80vw",
-    padding: "1rem",
-    borderRadius: "0.75rem",
-    display: "flex",
-    gap: "0.5rem",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  overlay: {
-    position: "fixed",
-    inset: 0,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    backdropFilter: "blur(8px)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1000,
-  },
-
-  modal: {
-    backgroundColor: "rgba(255,255,255,0.85)",
-    backdropFilter: "blur(12px)",
-    padding: "1.5rem",
-    borderRadius: "1rem",
-    width: "100%",
-    maxWidth: "420px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-  },
-
-  input: {
-    width: "100%",
-    padding: "0.6rem",
-    borderRadius: "0.5rem",
-    border: "1px solid #d1d5db",
-    marginBottom: "0.5rem",
-    outline: "none",
-  },
-
-  primaryBtn: {
-    backgroundColor: "#2563eb",
-    color: "white",
-    padding: "0.6rem 1rem",
-    borderRadius: "0.5rem",
-    border: "none",
-    cursor: "pointer",
-  },
-
-  secondaryBtn: {
-    backgroundColor: "#e5e7eb",
-    padding: "0.6rem 1rem",
-    borderRadius: "0.5rem",
-    border: "none",
-    cursor: "pointer",
-  },
-};
